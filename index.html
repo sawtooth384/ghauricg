@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghauri命令生成器</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container" id="SQLmap">
+        <header class="header">
+            <h1 class="title">Ghauri命令生成器</h1>
+        </header>
+
+        <div class="grid">
+
+            <div class="grid">
+                <div class="card">
+                    <h2>目标选项</h2>
+                    <div class="form-group">
+                        <label for="url">目标 URL:</label>
+                        <input type="text" id="url" placeholder="http://example.com/vuln.php?id=1">
+                    </div>
+                    <div class="form-group">
+                        <label for="bulkfile">批量文件:</label>
+                        <input type="text" id="bulkfile" placeholder="targets.txt">
+                    </div>
+                    <div class="form-group">
+                        <label for="requestfile">HTTP请求文件:</label>
+                        <input type="text" id="requestfile" placeholder="request.txt">
+                    </div>
+                </div>
+                <div class="card">
+                    <h2>注入选项</h2>
+                    <div class="form-group">
+                        <label for="testparam">指定测试参数:</label>
+                        <input type="text" id="testparam" placeholder="id">
+                    </div>
+                    <div class="form-group">
+                        <label for="dbms">指定数据库类型:</label>
+                        <input type="text" id="dbms" placeholder="MySQL|MSSQL|PostgreSQL|Oracle">
+                    </div>
+                    <div class="form-group">
+                        <label for="prefix">payload前缀:</label>
+                        <input type="text" id="prefix">
+                    </div>
+                    <div class="form-group">
+                        <label for="suffix">payload后缀:</label>
+                        <input type="text" id="suffix">
+                    </div>
+                    <div class="form-group">
+                        <label for="safe-chars">跳过特定字符的 URL 编码:</label>
+                        <input type="text" id="safe-chars" placeholder="[]{}">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <h2>请求选项</h2>
+                <div class="form-group">
+                    <label for="data">POST 数据:</label>
+                    <input type="text" id="data" placeholder="id=1&user=admin">
+                </div>
+                <div class="form-group">
+                    <label for="cookie">Cookie:</label>
+                    <input type="text" id="cookie" placeholder="PHPSESSID=abc123">
+                </div>
+                <div class="form-group">
+                    <label for="agent">HTTP用户代理:</label>
+                    <input type="text" id="agent" placeholder="User-Agent">
+                </div>
+                <div class="form-group">
+                    <label for="headers">额外头部:</label>
+                    <input type="text" id="headers" placeholder='例如: "X-Forwarded-For: 127.0.0.1"'>
+                </div>
+                <div class="form-group">
+                    <label for="timeout">超时(秒):</label>
+                    <input type="number" id="timeout" min="1" value="30">
+                </div>
+                <div class="form-group">
+                    <label for="delay">请求之间延迟(秒):</label>
+                    <input type="number" id="delay" min="0" value="0">
+                </div>
+                <div class="form-group">
+                    <label for="retries">连接重试次数:</label>
+                    <input type="number" id="retries" min="1" value="3">
+                </div>
+                <div class="form-group">
+                    <label for="proxy">代理:</label>
+                    <input type="text" id="proxy" placeholder="http://127.0.0.1:8080">
+                </div>
+                <div class="form-group">
+                    <label for="retries">忽略指定HTTP状态码:</label>
+                    <input type="text" id="ignore-code" placeholder="404,500">
+                </div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>检测选项</h2>
+                <div class="form-group">
+                    <label for="level">检测级别 (1-3):</label>
+                    <input type="number" id="level" min="1" max="5" value="1">
+                </div>
+                <div class="form-group">
+                    <label for="verbosity">详细程度 (1-5):</label>
+                    <input type="number" id="verbosity" min="0" max="6" value="1">
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>注入技术</h2>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="tech-b" checked>
+                        <label for="tech-b">布尔注入 (B)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="tech-e" checked>
+                        <label for="tech-e">报错注入 (E)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="tech-s" checked>
+                        <label for="tech-s">堆叠注入 (S)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="tech-t" checked>
+                        <label for="tech-t">延时注入 (T)</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>枚举</h2>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="banner">
+                        <label for="banner">数据库信息</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="current-user">
+                        <label for="current-user">当前用户</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="current-db">
+                        <label for="current-db">当前数据库</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="hostname">
+                        <label for="hostname">当前服务器主机</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="dbs">
+                        <label for="dbs">数据库</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="tables">
+                        <label for="tables">表</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="columns">
+                        <label for="columns">列</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="dump">
+                        <label for="dump">下载数据</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="count">
+                        <label for="count">表的数目</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="D">指定数据库:</label>
+                    <input type="text" id="D">
+                </div>
+                <div class="form-group">
+                    <label for="T">指定表:</label>
+                    <input type="text" id="T">
+                </div>
+                <div class="form-group">
+                    <label for="C">指定列:</label>
+                    <input type="text" id="C">
+                </div>
+            </div>
+            <div class="card">
+                <h2>高级选项</h2>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="confirm" checked>
+                        <label for="confirm">提高准确性</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="skip-urlencode" checked>
+                        <label for="skip-urlencode">跳过对payload的URL编码</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="batch" checked>
+                        <label for="batch">选择默认Y</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="threads">线程数:</label>
+                        <input type="number" id="threads" min="1" value="1">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <button onclick="generateCommand()">生成命令</button>
+
+        <div class="card">
+            <h2>生成的命令</h2>
+            <div id="output"></div>
+            <button class="copy-btn" onclick="copyCommand()">复制命令</button>
+        </div>
+
+        <footer class="footer">
+            <p>Ghauri命令生成器</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
